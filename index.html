@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Гостевая книга
+    </title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+<h1>Добро пожаловать</h1>
+<form action="javascript:shorten()">
+    <label for="review">Оставьте здесь ваш отзыв:</label><br>
+    <input id="review" name="compliment" type="text"><br>
+    <input type="submit" value="Сохранить"><br><br>
+    <label>Версия фронта: </label><br>
+    <label>Версия реплики: </label><br>
+    <label>Имя реплики: </label>
+</form>
+<p id="saved"></p>
+</body>
+
+<script>
+    function shorten() {
+        const content = document.getElementById("review").value
+        fetch("/shorten", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: content
+        })
+            .then(response => response.json())
+            .then(data => {
+                const compliment = data.compliment
+                document.getElementById("sent").innerHTML = <p>Сохранили ваш отзыв"${compliment}" в базу данных!</p>
+            })
+            .catch(error => {
+                document.getElementById("sent").innerHTML = <p>Произошла ошибка ${error}, попробуйте еще раз</p>
+            })
+    }
+</script>
+
+</html>
